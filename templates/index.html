@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Main Chat Container -->
+<div class="flex-grow flex flex-col min-h-0 bg-transparent rounded-2xl overflow-hidden shadow-sm border border-muted/10 relative pb-20 sm:pb-24">
+    
+    <!-- Chat Messages Area -->
+    <div id="chatWindow" class="absolute inset-0 flex flex-col overflow-y-auto p-4 sm:p-6 gap-5 scroll-smooth" aria-label="Chat messages" aria-live="polite" aria-atomic="false">
+        
+        <!-- Welcome Message -->
+        <div class="flex justify-start animate-fade-up">
+            <div class="max-w-[90%] sm:max-w-[80%] rounded-2xl rounded-tl-sm px-4 py-3 bg-white text-ink shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-muted/10 chat-bubble">
+                <p>Hi! I'm ElectionGuide. Ask me anything about how elections work.</p>
+            </div>
+        </div>
+        
+        <!-- Topic Chips Container -->
+        <div id="topicChips" class="flex flex-wrap gap-2 mt-1 animate-fade-up" style="animation-delay: 0.2s;">
+            <button class="topic-btn px-3 py-1.5 rounded-full text-[13px] font-medium bg-white text-vote border border-vote/20 hover:bg-vote/5 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-vote/50" data-topic="🗓 Election Timeline" title="Ask about the Election Timeline">🗓 Election Timeline</button>
+            <button class="topic-btn px-3 py-1.5 rounded-full text-[13px] font-medium bg-white text-vote border border-vote/20 hover:bg-vote/5 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-vote/50" data-topic="📋 Voter Registration" title="Ask about Voter Registration">📋 Voter Registration</button>
+            <button class="topic-btn px-3 py-1.5 rounded-full text-[13px] font-medium bg-white text-vote border border-vote/20 hover:bg-vote/5 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-vote/50" data-topic="🏛 Electoral College" title="Ask about the Electoral College">🏛 Electoral College</button>
+            <button class="topic-btn px-3 py-1.5 rounded-full text-[13px] font-medium bg-white text-vote border border-vote/20 hover:bg-vote/5 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-vote/50" data-topic="📬 Mail-in Voting" title="Ask about Mail-in Voting">📬 Mail-in Voting</button>
+            <button class="topic-btn px-3 py-1.5 rounded-full text-[13px] font-medium bg-white text-vote border border-vote/20 hover:bg-vote/5 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-vote/50" data-topic="🔢 How Votes Are Counted" title="Ask how votes are counted">🔢 How Votes Are Counted</button>
+            <button id="quizBtn" class="px-3 py-1.5 rounded-full text-[13px] font-medium bg-accent text-white border border-accent hover:bg-yellow-600 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/50" title="Take a short interactive election quiz">🧠 Take a Quiz</button>
+        </div>
+    </div>
+</div>
+
+<!-- Input Area (Fixed at bottom of main) -->
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-paper/95 backdrop-blur-md border-t border-muted/20 sm:absolute sm:left-auto sm:right-auto sm:w-full sm:max-w-3xl sm:mx-auto sm:px-0">
+    <form id="chatForm" class="flex items-end gap-2 relative">
+        <textarea 
+            id="messageInput" 
+            rows="1" 
+            class="w-full bg-white border border-muted/20 text-ink rounded-xl px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-vote/50 focus:border-vote resize-none min-h-[48px] max-h-32 shadow-sm transition-shadow" 
+            placeholder="Ask a question about the election process..."
+            aria-label="Type your election question"
+            required
+        ></textarea>
+        <button 
+            type="submit" 
+            id="sendBtn"
+            class="absolute right-2 bottom-2 w-8 h-8 rounded-lg bg-vote text-white flex items-center justify-center hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-vote focus:ring-offset-1 focus:ring-offset-white"
+            aria-label="Send message"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 ml-0.5" aria-hidden="true">
+                <path d="M3.478 2.404a.75.75 0 00-.926.941l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.404z" />
+            </svg>
+        </button>
+    </form>
+    <p class="text-[11px] text-center text-muted mt-2">AI can make mistakes. Please verify important election rules and deadlines with official sources.</p>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatForm = document.getElementById('chatForm');
+        const messageInput = document.getElementById('messageInput');
+        const chatWindow = document.getElementById('chatWindow');
+        const sendBtn = document.getElementById('sendBtn');
+        const topicChipsContainer = document.getElementById('topicChips');
+        const topicButtons = document.querySelectorAll('.topic-btn');
+        const quizBtn = document.getElementById('quizBtn');
+
+        let chatHistory = [];
+        let isFirstMessage = true;
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = (this.scrollHeight) + 'px';
+            if (this.value === '') {
+                this.style.height = 'auto'; // reset to 1 row
+            }
+        });
+
+        // Handle Enter key for submit (Shift+Enter for new line)
+        messageInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (this.value.trim() !== '') {
+                    chatForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+                }
+            }
+        });
+
+        // Topic chips click handler
+        topicButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const topic = btn.getAttribute('data-topic');
+                messageInput.value = topic;
+                chatForm.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+            });
+        });
+
+        // Quiz button handler
+        if (quizBtn) {
+            quizBtn.addEventListener('click', async () => {
+                try {
+                    const response = await fetch('/api/quiz');
+                    const data = await response.json();
+                    renderQuizMessage(data);
+                } catch(e) {
+                    appendErrorMessage("Failed to load quiz.");
+                }
+            });
+        }
+
+        // Basic Markdown Parser (since no external libs allowed)
+        function parseSimpleMarkdown(text) {
+            // Escape HTML tags to prevent XSS
+            let html = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            
+            // Bold
+            html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+            
+            // Split by paragraphs
+            const paragraphs = html.split(/\n\n+/);
+            
+            return paragraphs.map(p => {
+                // Check if paragraph looks like a list
+                if (p.match(/(?:^|\n)(?:\d+\.|\-|\*) /)) {
+                    const lines = p.split('\n');
+                    const isOrdered = p.trim().match(/^\d+\./);
+                    const listTag = isOrdered ? 'ol' : 'ul';
+                    
+                    let listHtml = `<${listTag}>`;
+                    lines.forEach(line => {
+                        const match = line.match(/^(?:\d+\.|\-|\*)\s+(.*)/);
+                        if (match) {
+                            listHtml += `<li>${match[1]}</li>`;
+                        } else if (line.trim() !== '') {
+                            // Append to previous item if no bullet
+                            listHtml += `<br>${line}`; 
+                        }
+                    });
+                    listHtml += `</${listTag}>`;
+                    return listHtml;
+                } else {
+                    return `<p>${p.replace(/\n/g, '<br>')}</p>`;
+                }
+            }).join('');
+        }
+
+        function renderQuizMessage(quizData) {
+            // Hide chips on first message
+            if (isFirstMessage && topicChipsContainer) {
+                topicChipsContainer.style.display = 'none';
+                isFirstMessage = false;
+            }
+            
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex justify-start animate-fade-up shrink-0 w-full`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = "max-w-[90%] sm:max-w-[80%] rounded-2xl rounded-tl-sm px-4 py-3 bg-white text-ink shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-muted/10 chat-bubble break-words";
+            
+            const qText = document.createElement('p');
+            qText.className = "font-semibold mb-3";
+            qText.textContent = "🧠 " + quizData.question;
+            bubble.appendChild(qText);
+            
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = "flex flex-col gap-2";
+            
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = "mt-3 text-sm hidden p-3 rounded-xl";
+            
+            quizData.options.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "text-left px-3 py-2 border border-muted/20 rounded-lg hover:bg-vote/5 transition-colors focus:outline-none focus:ring-2 focus:ring-vote";
+                btn.textContent = opt;
+                btn.onclick = () => {
+                    // Disable all buttons after guess
+                    Array.from(optionsContainer.children).forEach(b => {
+                        b.disabled = true;
+                        b.classList.add("opacity-50", "cursor-not-allowed");
+                    });
+                    
+                    feedbackDiv.classList.remove("hidden");
+                    if (index === quizData.correct_index) {
+                        btn.classList.add("bg-green-100", "border-green-400", "text-green-900");
+                        feedbackDiv.classList.add("bg-green-50", "text-green-900", "border", "border-green-200");
+                        feedbackDiv.innerHTML = `<strong>✅ Correct!</strong><br>${quizData.explanation}`;
+                    } else {
+                        btn.classList.add("bg-red-100", "border-red-400", "text-red-900");
+                        // Highlight the correct option
+                        const correctBtn = optionsContainer.children[quizData.correct_index];
+                        correctBtn.classList.remove("opacity-50");
+                        correctBtn.classList.add("bg-green-100", "border-green-400", "text-green-900");
+                        
+                        feedbackDiv.classList.add("bg-red-50", "text-red-900", "border", "border-red-200");
+                        feedbackDiv.innerHTML = `<strong>❌ Incorrect.</strong><br>${quizData.explanation}`;
+                    }
+                    scrollToBottom();
+                };
+                optionsContainer.appendChild(btn);
+            });
+            
+            bubble.appendChild(optionsContainer);
+            bubble.appendChild(feedbackDiv);
+            wrapper.appendChild(bubble);
+            chatWindow.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        chatForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Hide topic chips on first message
+            if (isFirstMessage && topicChipsContainer) {
+                topicChipsContainer.style.display = 'none';
+                isFirstMessage = false;
+            }
+
+            // Show User Message
+            appendMessage('user', message);
+            
+            // Disable input while requesting
+            messageInput.value = '';
+            messageInput.style.height = 'auto'; // reset height
+            messageInput.disabled = true;
+            sendBtn.disabled = true;
+
+            // Show Typing Indicator
+            const typingIndicatorId = appendTypingIndicator();
+
+            try {
+                const response = await fetch('/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message, history: chatHistory })
+                });
+
+                const data = await response.json();
+                removeTypingIndicator(typingIndicatorId);
+
+                if (!response.ok || data.error) {
+                    throw new Error(data.error || 'Server returned an error');
+                }
+
+                // Show Bot Message
+                appendMessage('assistant', data.reply);
+
+                // Update conversation history
+                chatHistory.push({ role: 'user', content: message });
+                chatHistory.push({ role: 'model', content: data.reply });
+
+            } catch (error) {
+                removeTypingIndicator(typingIndicatorId);
+                appendErrorMessage(error.message);
+            } finally {
+                // Re-enable input
+                messageInput.disabled = false;
+                sendBtn.disabled = false;
+                messageInput.focus(); // Proper focus management!
+                scrollToBottom();
+            }
+        });
+
+        function appendMessage(role, content) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-up shrink-0 w-full`;
+            
+            const bubble = document.createElement('div');
+            if (role === 'user') {
+                bubble.className = "max-w-[90%] sm:max-w-[80%] rounded-2xl rounded-tr-sm px-4 py-3 bg-vote text-white shadow-sm chat-bubble break-words whitespace-pre-wrap";
+                bubble.textContent = content; // Safe as plain text
+            } else {
+                bubble.className = "max-w-[90%] sm:max-w-[80%] rounded-2xl rounded-tl-sm px-4 py-3 bg-white text-ink shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-muted/10 chat-bubble break-words";
+                bubble.innerHTML = parseSimpleMarkdown(content);
+            }
+
+            wrapper.appendChild(bubble);
+            chatWindow.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function appendErrorMessage(errorMsg) {
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex justify-start animate-fade-up shrink-0 w-full`;
+            
+            const bubble = document.createElement('div');
+            bubble.className = "max-w-[90%] sm:max-w-[80%] rounded-2xl rounded-tl-sm px-4 py-3 bg-red-50 text-red-700 border border-red-200 shadow-sm text-sm chat-bubble";
+            bubble.innerHTML = `<strong>Error:</strong> ${errorMsg}`;
+
+            wrapper.appendChild(bubble);
+            chatWindow.appendChild(wrapper);
+            scrollToBottom();
+        }
+
+        function appendTypingIndicator() {
+            const id = 'typing-' + Date.now();
+            const wrapper = document.createElement('div');
+            wrapper.id = id;
+            wrapper.className = "flex justify-start animate-fade-up shrink-0 w-full";
+            wrapper.setAttribute("role", "status");
+            wrapper.setAttribute("aria-live", "polite");
+            
+            const bubble = document.createElement('div');
+            bubble.className = "rounded-2xl rounded-tl-sm px-5 py-4 bg-white shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] border border-muted/10 typing-indicator";
+            
+            for(let i=0; i<3; i++) {
+                const dot = document.createElement('span');
+                dot.className = "typing-dot text-muted/50";
+                bubble.appendChild(dot);
+            }
+
+            wrapper.appendChild(bubble);
+            chatWindow.appendChild(wrapper);
+            scrollToBottom();
+            return id;
+        }
+
+        function removeTypingIndicator(id) {
+            const indicator = document.getElementById(id);
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function scrollToBottom() {
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    });
+</script>
+{% endblock %}

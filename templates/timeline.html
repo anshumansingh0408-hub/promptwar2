@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}Election Timeline - ElectionGuide{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Timeline specific styles */
+    .timeline-container {
+        position: relative;
+    }
+    
+    /* Center line for desktop */
+    .timeline-container::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        background-color: theme('colors.vote');
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -2px;
+        border-radius: 4px;
+        opacity: 0.2;
+    }
+
+    @media (max-width: 768px) {
+        /* Left line for mobile */
+        .timeline-container::after {
+            left: 31px;
+        }
+    }
+
+    .timeline-item {
+        position: relative;
+        width: 50%;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.6s ease-out;
+    }
+
+    .timeline-item.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Left item */
+    .timeline-item:nth-child(odd) {
+        left: 0;
+        padding-right: 40px;
+    }
+
+    /* Right item */
+    .timeline-item:nth-child(even) {
+        left: 50%;
+        padding-left: 40px;
+    }
+
+    @media (max-width: 768px) {
+        .timeline-item {
+            width: 100%;
+            padding-left: 70px !important;
+            padding-right: 0 !important;
+        }
+        .timeline-item:nth-child(even) {
+            left: 0;
+        }
+    }
+
+    /* The circles on the timeline */
+    .timeline-circle {
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background-color: theme('colors.accent');
+        border: 4px solid white;
+        border-radius: 50%;
+        top: 24px;
+        z-index: 10;
+        box-shadow: 0 0 0 4px rgba(232, 163, 23, 0.2);
+    }
+
+    /* Position circle for left/right on desktop */
+    .timeline-item:nth-child(odd) .timeline-circle {
+        right: -10px;
+    }
+    .timeline-item:nth-child(even) .timeline-circle {
+        left: -10px;
+    }
+
+    @media (max-width: 768px) {
+        .timeline-item .timeline-circle {
+            left: 21px !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="mb-6 flex justify-between items-center">
+    <a href="/" class="inline-flex items-center text-sm font-semibold text-vote hover:text-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-vote rounded px-2 py-1">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 mr-1">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Back to Chat
+    </a>
+    <h2 class="font-display font-bold text-2xl text-ink">US Election Timeline</h2>
+</div>
+
+<div class="timeline-container py-4">
+    
+    <!-- Step 1 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">📣</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Candidate Announcements</h3>
+            <div class="text-sm font-semibold text-accent mb-2">~2 Years Before Election</div>
+            <p class="text-sm text-ink leading-relaxed">Candidates typically announce their intention to run for President up to two years in advance. They begin campaigning, building staff, and raising funds early.</p>
+        </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🗳️</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Primary Elections</h3>
+            <div class="text-sm font-semibold text-accent mb-2">Jan - June of Election Year</div>
+            <p class="text-sm text-ink leading-relaxed">States hold primaries and caucuses to award delegates to the candidates. These delegates will vote for their candidate at the party convention.</p>
+        </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🎉</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Party Conventions</h3>
+            <div class="text-sm font-semibold text-accent mb-2">Summer of Election Year</div>
+            <p class="text-sm text-ink leading-relaxed">Political parties hold national conventions to officially nominate their President and Vice President. The party platform is also formally adopted.</p>
+        </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">📺</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Presidential Debates</h3>
+            <div class="text-sm font-semibold text-accent mb-2">September - October</div>
+            <p class="text-sm text-ink leading-relaxed">The nominated candidates participate in nationally televised debates. These events allow voters to compare candidates directly on major issues.</p>
+        </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🗓️</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Election Day</h3>
+            <div class="text-sm font-semibold text-accent mb-2">1st Tuesday after 1st Monday in Nov</div>
+            <p class="text-sm text-ink leading-relaxed">Citizens across the country cast their ballots for their preferred candidate. These votes actually determine the state's electors for the Electoral College.</p>
+        </div>
+    </div>
+
+    <!-- Step 6 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🔢</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Votes Counted</h3>
+            <div class="text-sm font-semibold text-accent mb-2">November</div>
+            <p class="text-sm text-ink leading-relaxed">Election officials tabulate all early, mail-in, and Election Day ballots. States then certify the popular vote results, confirming their electors.</p>
+        </div>
+    </div>
+
+    <!-- Step 7 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🏛️</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Electoral College Votes</h3>
+            <div class="text-sm font-semibold text-accent mb-2">Mid-December</div>
+            <p class="text-sm text-ink leading-relaxed">The electors meet in their respective states to officially cast their votes for President and Vice President based on the state's popular vote.</p>
+        </div>
+    </div>
+
+    <!-- Step 8 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">✅</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Congress Certifies Results</h3>
+            <div class="text-sm font-semibold text-accent mb-2">January 6</div>
+            <p class="text-sm text-ink leading-relaxed">A joint session of Congress convenes to count the electoral votes. The Vice President officially declares the winner of the presidential election.</p>
+        </div>
+    </div>
+
+    <!-- Step 9 -->
+    <div class="timeline-item mb-10">
+        <div class="timeline-circle"></div>
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-muted/10 hover:shadow-md transition-shadow">
+            <div class="text-3xl mb-3">🎊</div>
+            <h3 class="font-display font-bold text-lg text-vote mb-1">Inauguration Day</h3>
+            <div class="text-sm font-semibold text-accent mb-2">January 20</div>
+            <p class="text-sm text-ink leading-relaxed">The President-elect takes the oath of office and officially begins their term as the President of the United States.</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.15
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.timeline-item').forEach(item => {
+            observer.observe(item);
+        });
+    });
+</script>
+{% endblock %}
