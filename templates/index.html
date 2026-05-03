@@ -11,46 +11,53 @@
         animation: blink 1s step-end infinite;
         padding-right: 2px;
     }
+    /* Full-screen chat layout */
+    .chat-scroll-area {
+        height: calc(100vh - 280px);
+        overflow-y: auto;
+    }
+    @media (max-width: 767px) {
+        .chat-scroll-area {
+            height: calc(100vh - 240px);
+        }
+    }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="max-w-3xl mx-auto px-4 py-6 flex flex-col flex-grow min-h-0">
+<!-- Hero Text with Typewriter — above the chat -->
+<div class="text-center py-4 bg-paper">
+    <h2 class="font-display text-2xl sm:text-3xl text-secondary mb-1">Your Guide to Indian Democracy</h2>
+    <p class="text-sm text-ink/60">Ask me about: <span id="typewriter" class="typewriter-cursor text-primary font-semibold"></span></p>
+</div>
 
-    <!-- Hero Text with Typewriter -->
-    <div class="text-center mb-4">
-        <h2 class="font-display text-2xl sm:text-3xl text-secondary mb-2">Your Guide to Indian Democracy</h2>
-        <p class="text-sm text-ink/60">Ask me about: <span id="typewriter" class="typewriter-cursor text-primary font-semibold"></span></p>
-    </div>
+<!-- Full-height Chat Area (no box/card wrapper) -->
+<div class="max-w-3xl mx-auto w-full px-4 flex flex-col flex-grow min-h-0">
 
-    <!-- Chat Window -->
-    <div class="flex-grow flex flex-col min-h-0 bg-white rounded-2xl overflow-hidden shadow-lg border border-gray-100 relative pb-20 sm:pb-24">
+    <!-- Scrollable Chat Messages -->
+    <div id="chatWindow" class="chat-scroll-area flex flex-col p-4 sm:p-6 gap-5 scroll-smooth" aria-label="Chat messages" aria-live="polite" aria-atomic="false">
 
-        <!-- Chat Messages Area -->
-        <div id="chatWindow" class="absolute inset-0 flex flex-col overflow-y-auto p-4 sm:p-6 gap-4 scroll-smooth" aria-label="Chat messages" aria-live="polite" aria-atomic="false">
-
-            <!-- Welcome Message -->
-            <div class="flex justify-start animate-fade-up">
-                <div class="max-w-[90%] sm:max-w-[80%] rounded-2xl rounded-tl-sm px-5 py-4 bg-white text-ink shadow-sm border-l-[3px] border-secondary chat-bubble">
-                    <p class="font-semibold text-secondary mb-1">🇮🇳 Namaste!</p>
-                    <p>I'm <strong>ElectionGuide</strong>. Ask me anything about Indian elections — Lok Sabha, Rajya Sabha, voter registration, EVM voting, and more.</p>
-                </div>
+        <!-- Welcome Message -->
+        <div class="flex justify-start animate-fade-up">
+            <div class="max-w-[90%] sm:max-w-[80%] rounded-2xl rounded-tl-sm px-5 py-4 bg-white text-ink shadow-sm border-l-[3px] border-secondary chat-bubble">
+                <p class="font-semibold text-secondary mb-1">🇮🇳 Namaste!</p>
+                <p>I'm <strong>ElectionGuide</strong>. Ask me anything about Indian elections — Lok Sabha, Rajya Sabha, voter registration, EVM voting, and more.</p>
             </div>
+        </div>
 
-            <!-- Topic Chips -->
-            <div id="topicChips" class="flex flex-wrap gap-2 mt-1 animate-fade-up" style="animation-delay: 0.2s;">
-                <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="Tell me about the Election Timeline in India" title="Ask about the Election Timeline">🗓 Election Timeline</button>
-                <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="How do I register as a voter in India?" title="Ask about Voter Registration">📋 Voter Registration</button>
-                <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="Explain Lok Sabha and Rajya Sabha" title="Ask about Lok Sabha & Rajya Sabha">🏛 Lok Sabha & Rajya Sabha</button>
-                <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="How does EVM voting work in India?" title="Ask about EVM Voting">📬 EVM Voting</button>
-                <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="What is the Model Code of Conduct (Aachar Sanhita)?" title="Ask about Aachar Sanhita">🔢 Aachar Sanhita</button>
-                <button id="quizBtn" class="px-3.5 py-2 rounded-full text-[13px] font-semibold bg-accent text-secondary border-2 border-accent hover:bg-yellow-500 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/50" title="Take a short interactive election quiz">🧠 Take a Quiz</button>
-            </div>
+        <!-- Topic Chips (inside chat, hidden after first message) -->
+        <div id="topicChips" class="flex flex-wrap gap-2 mt-1 animate-fade-up" style="animation-delay: 0.2s;">
+            <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="Tell me about the Election Timeline in India" title="Ask about the Election Timeline">🗓 Election Timeline</button>
+            <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="How do I register as a voter in India?" title="Ask about Voter Registration">📋 Voter Registration</button>
+            <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="Explain Lok Sabha and Rajya Sabha" title="Ask about Lok Sabha &amp; Rajya Sabha">🏛 Lok Sabha &amp; Rajya Sabha</button>
+            <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="How does EVM voting work in India?" title="Ask about EVM Voting">📬 EVM Voting</button>
+            <button class="topic-btn px-3.5 py-2 rounded-full text-[13px] font-medium text-secondary border-2 border-secondary/20 hover:bg-primary hover:text-white hover:border-primary transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/50" data-topic="What is the Model Code of Conduct (Aachar Sanhita)?" title="Ask about Aachar Sanhita">🔢 Aachar Sanhita</button>
+            <button id="quizBtn" class="px-3.5 py-2 rounded-full text-[13px] font-semibold bg-accent text-secondary border-2 border-accent hover:bg-yellow-500 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-accent/50" title="Take a short interactive election quiz">🧠 Take a Quiz</button>
         </div>
     </div>
 
-    <!-- Input Area -->
-    <div class="mt-4">
+    <!-- Sticky Input Bar -->
+    <div class="sticky bottom-0 bg-paper pt-3 pb-4 border-t border-gray-100">
         <form id="chatForm" class="flex items-end gap-3 relative">
             <textarea
                 id="messageInput"
