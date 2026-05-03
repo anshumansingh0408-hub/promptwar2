@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Voter Rights, Duties & Election Rules ⚖️ - ElectionGuide{% endblock %}
+
+{% block extra_head %}
+<style>
+    .rights-page { background-color: #FFF8F0; }
+    .rights-card {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease-out;
+    }
+    .rights-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .rights-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px -12px rgba(0,0,0,0.15);
+    }
+    .card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }
+    .list-check li {
+        position: relative;
+        padding-left: 1.75rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+    }
+    .list-check li::before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        font-weight: 700;
+    }
+    .list-saffron li::before { color: #FF6B35; }
+    .list-green li::before { color: #138808; }
+    .list-navy li::before { color: #1A3A5C; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="rights-page min-h-screen">
+    <div class="max-w-5xl mx-auto px-4 py-8">
+
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h2 class="font-display text-3xl sm:text-4xl text-secondary mb-3">Voter Rights, Duties & Election Rules ⚖️</h2>
+            <p class="text-ink/60 max-w-2xl mx-auto">Know your rights, understand your duties, and learn the rules that make Indian elections the world's largest democratic exercise.</p>
+        </div>
+
+        <!-- Card 1: Voter Rights -->
+        <div class="rights-card bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6 transition-all">
+            <div class="flex items-start gap-4 mb-5">
+                <div class="card-icon" style="background: linear-gradient(135deg, #FF993320, #FF6B3520);">⚖️</div>
+                <div>
+                    <h3 class="font-display text-xl text-secondary">Voter Rights (Article 326)</h3>
+                    <p class="text-sm text-ink/50 mt-1">Constitutional rights of every Indian citizen</p>
+                </div>
+            </div>
+            <ul class="list-check list-saffron text-sm text-ink/80">
+                <li><strong>Right to vote</strong> if 18+ Indian citizen</li>
+                <li><strong>Right to free and fair election</strong> — guaranteed by the Constitution and enforced by ECI</li>
+                <li><strong>Right to secret ballot</strong> — no one can compel you to reveal your vote</li>
+                <li><strong>Right to get name in electoral roll</strong> — every eligible citizen can register</li>
+                <li><strong>Right to file complaint with ECI</strong> — against malpractice or violations</li>
+                <li><strong>Right to know candidate background</strong> — via Form 26 (criminal record, assets, education)</li>
+            </ul>
+        </div>
+
+        <!-- Card 2: Voter Duties -->
+        <div class="rights-card bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6 transition-all">
+            <div class="flex items-start gap-4 mb-5">
+                <div class="card-icon" style="background: linear-gradient(135deg, #13880820, #13880820);">🙋</div>
+                <div>
+                    <h3 class="font-display text-xl text-secondary">Voter Duties</h3>
+                    <p class="text-sm text-ink/50 mt-1">Responsibilities of a responsible citizen</p>
+                </div>
+            </div>
+            <ul class="list-check list-green text-sm text-ink/80">
+                <li><strong>Register as voter</strong> — through NVSP portal or BLO</li>
+                <li><strong>Verify name before election</strong> — check your name in the electoral roll</li>
+                <li><strong>Vote on election day</strong> — exercise your democratic right</li>
+                <li><strong>Not accept bribes</strong> — refuse money, gifts, or inducements from any party</li>
+                <li><strong>Report malpractice to 1950</strong> — or use the cVIGIL app</li>
+                <li><strong>Carry valid ID to booth</strong> — EPIC card or approved alternate ID</li>
+            </ul>
+        </div>
+
+        <!-- Card 3: Aachar Sanhita -->
+        <div class="rights-card bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6 transition-all">
+            <div class="flex items-start gap-4 mb-5">
+                <div class="card-icon" style="background: linear-gradient(135deg, #1A3A5C20, #1A3A5C20);">📜</div>
+                <div>
+                    <h3 class="font-display text-xl text-secondary">Aachar Sanhita (Model Code of Conduct)</h3>
+                    <p class="text-sm text-ink/50 mt-1">Rules for parties & candidates during elections</p>
+                </div>
+            </div>
+            <ul class="list-check list-navy text-sm text-ink/80">
+                <li><strong>Activated</strong> when ECI announces election schedule</li>
+                <li><strong>No new government schemes</strong> — ruling party cannot announce new policies</li>
+                <li><strong>No government vehicles for campaigns</strong> — official machinery cannot be used</li>
+                <li><strong>No religious/caste campaigning</strong> — appealing on communal lines is banned</li>
+                <li><strong>Campaign material 200m away from booth</strong> — silence zone maintained</li>
+                <li><strong>Candidates must submit expense accounts</strong> — all spending is tracked</li>
+                <li><strong>Spending limit:</strong> Lok Sabha ₹95 lakh, Vidhan Sabha ₹40 lakh</li>
+            </ul>
+        </div>
+
+        <!-- Card 4: Campaign Rules -->
+        <div class="rights-card bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6 transition-all">
+            <div class="flex items-start gap-4 mb-5">
+                <div class="card-icon" style="background: linear-gradient(135deg, #FFD70030, #FFD70020);">📢</div>
+                <div>
+                    <h3 class="font-display text-xl text-secondary">Election Campaign Rules</h3>
+                    <p class="text-sm text-ink/50 mt-1">Regulations for fair campaigning</p>
+                </div>
+            </div>
+            <ul class="list-check list-saffron text-sm text-ink/80">
+                <li><strong>Campaign ends 48 hours before polling</strong> — this is the <em>Silent Period</em></li>
+                <li><strong>No exit polls until last phase ends</strong> — media restriction enforced by ECI</li>
+                <li><strong>No liquor within 48 hours of polling</strong> — dry day enforced</li>
+                <li><strong>No paid news</strong> — advertisements disguised as news are prohibited</li>
+                <li><strong>All ads pre-certified</strong> by Media Certification & Monitoring Committee (MCMC)</li>
+            </ul>
+        </div>
+
+        <!-- Card 5: NOTA -->
+        <div class="rights-card bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6 transition-all">
+            <div class="flex items-start gap-4 mb-5">
+                <div class="card-icon" style="background: linear-gradient(135deg, #FF6B3520, #13880820);">🚫</div>
+                <div>
+                    <h3 class="font-display text-xl text-secondary">NOTA — None Of The Above</h3>
+                    <p class="text-sm text-ink/50 mt-1">Your right to reject all candidates</p>
+                </div>
+            </div>
+            <ul class="list-check list-green text-sm text-ink/80">
+                <li><strong>Introduced 2013</strong> by Supreme Court of India</li>
+                <li><strong>Last option on EVM</strong> — appears at the bottom of the candidate list</li>
+                <li><strong>Voters reject all candidates</strong> — express dissatisfaction without abstaining</li>
+                <li><strong>NOTA is counted but does not affect result</strong> — the candidate with most votes still wins, even if NOTA gets more</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.rights-card').forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

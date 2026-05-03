@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ElectionGuide{% endblock %}</title>
+    <meta name="description" content="ElectionGuide - Your AI-powered guide to understanding Indian elections. Learn about Lok Sabha, Rajya Sabha, voter registration, and more.">
+    <title>{% block title %}ElectionGuide - Digital India Democracy{% endblock %}</title>
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -19,15 +20,16 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        display: ['Sora', 'sans-serif'],
-                        body: ['"DM Sans"', 'sans-serif'],
+                        display: ['"Playfair Display"', 'serif'],
+                        body: ['"Plus Jakarta Sans"', 'sans-serif'],
                     },
                     colors: {
-                        ink: '#0D1117',
-                        paper: '#F5F0E8',
-                        vote: '#1A56DB',
-                        accent: '#E8A317',
-                        muted: '#6B7280',
+                        primary: '#FF6B35',
+                        secondary: '#1A3A5C',
+                        accent: '#FFD700',
+                        success: '#138808',
+                        ink: '#1A1A2E',
+                        paper: '#F8F9FF',
                     }
                 }
             }
@@ -36,10 +38,11 @@
 
     <!-- Custom Styles -->
     <style>
+        html { scroll-behavior: smooth; }
+
         body {
-            background-color: theme('colors.paper');
-            /* Subtle paper-grain texture */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+            background-color: #F8F9FF;
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         /* Chat Bubble Markdown Formatting */
@@ -56,7 +59,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-up {
-            animation: fadeUp 0.3s ease-out forwards;
+            animation: fadeUp 0.4s ease-out forwards;
         }
 
         /* 3-Dot Typing Indicator Bounce */
@@ -67,19 +70,36 @@
         .typing-indicator {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             padding: 4px 0;
         }
         .typing-dot {
-            width: 6px;
-            height: 6px;
-            background-color: currentColor;
+            width: 8px;
+            height: 8px;
+            background-color: #1A3A5C;
             border-radius: 50%;
             display: inline-block;
             animation: bounceDelay 1.4s infinite ease-in-out both;
         }
         .typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        /* Hamburger menu transition */
+        .nav-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .nav-menu.open {
+            max-height: 500px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-menu {
+                max-height: none !important;
+                overflow: visible;
+            }
+        }
     </style>
 
     {% block extra_head %}{% endblock %}
@@ -87,41 +107,121 @@
 <body class="font-body text-ink min-h-screen flex flex-col antialiased">
     <a href="#main-content" class="sr-only focus:not-sr-only">Skip to main content</a>
 
-    <!-- Sticky Navigation Bar -->
-    <header role="banner" class="sticky top-0 z-50 bg-paper/90 backdrop-blur-md border-b border-muted/20 shadow-sm">
-        <div class="max-w-3xl mx-auto px-4 h-16 flex items-center justify-between">
-            
-            <!-- Logo & Title -->
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-vote rounded flex items-center justify-center text-white shrink-0 shadow-sm">
-                    <!-- Clipboard/Ballot SVG -->
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+    <!-- Tricolor Strip -->
+    <div class="flex w-full" style="height: 3px;" aria-hidden="true">
+        <div class="flex-1" style="background-color: #FF9933;"></div>
+        <div class="flex-1 bg-white"></div>
+        <div class="flex-1" style="background-color: #138808;"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <header role="banner" class="sticky top-0 z-50 bg-secondary shadow-lg">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+
+                <!-- Logo & Title -->
+                <a href="/" class="flex items-center gap-3 text-white no-underline">
+                    <!-- Ashoka Chakra SVG -->
+                    <svg width="36" height="36" viewBox="0 0 100 100" class="shrink-0" aria-label="Ashoka Chakra">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#2563EB" stroke-width="4"/>
+                        <circle cx="50" cy="50" r="8" fill="#2563EB"/>
+                        <g stroke="#2563EB" stroke-width="2">
+                            <line x1="50" y1="5" x2="50" y2="95" />
+                            <line x1="5" y1="50" x2="95" y2="50" />
+                            <line x1="17.3" y1="17.3" x2="82.7" y2="82.7" />
+                            <line x1="82.7" y1="17.3" x2="17.3" y2="82.7" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(15, 50, 50)" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(30, 50, 50)" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(60, 50, 50)" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(75, 50, 50)" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(105, 50, 50)" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(120, 50, 50)" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(150, 50, 50)" />
+                            <line x1="50" y1="5" x2="50" y2="95" transform="rotate(165, 50, 50)" />
+                        </g>
                     </svg>
-                </div>
-                <div>
-                    <h1 class="font-display font-bold text-lg leading-none tracking-tight">ElectionGuide</h1>
-                    <p class="text-[10px] sm:text-xs text-muted mt-1 uppercase tracking-wider font-medium">Neutral &middot; Non-partisan &middot; Educational</p>
-                </div>
+                    <div>
+                        <h1 class="font-display font-bold text-lg leading-none tracking-tight text-white">ElectionGuide</h1>
+                        <p class="text-[10px] text-blue-200 mt-0.5 uppercase tracking-wider font-medium">Digital India Democracy</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center gap-1" aria-label="Main navigation">
+                    <a href="/" class="text-white/90 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-colors">🏠 Chat</a>
+                    <a href="/timeline" class="text-white/90 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-colors">📅 Timeline</a>
+                    <a href="/seats" class="text-white/90 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-colors">🏛 Seats</a>
+                    <a href="/rights" class="text-white/90 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-colors">⚖️ Rights</a>
+                    <a href="/register" class="text-white/90 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-colors">📝 Register</a>
+                    <a href="/history" class="text-white/90 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-colors">📜 History</a>
+                    <a href="/helpline" class="text-white/90 hover:text-white hover:bg-white/10 px-3 py-2 rounded-lg text-sm font-medium transition-colors">☎️ Helpline</a>
+                </nav>
+
+                <!-- Mobile Hamburger -->
+                <button id="hamburgerBtn" class="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors" aria-label="Toggle menu" aria-expanded="false">
+                    <svg id="hamburgerIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                    <svg id="closeIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 hidden">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
-            <!-- Links & Badge -->
-            <div class="flex items-center gap-4">
-                <a href="/timeline" class="text-xs font-semibold text-vote hover:underline focus:outline-none focus:ring-2 focus:ring-vote rounded px-1">
-                    📅 View Full Timeline
-                </a>
-                <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-accent/15 text-accent border border-accent/20">
-                    🗳 Civics AI
-                </span>
-            </div>
-            
+            <!-- Mobile Nav Menu -->
+            <nav id="mobileMenu" class="nav-menu md:hidden pb-2" aria-label="Mobile navigation">
+                <a href="/" class="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-colors">🏠 Chat</a>
+                <a href="/timeline" class="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-colors">📅 Timeline</a>
+                <a href="/seats" class="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-colors">🏛 Seats</a>
+                <a href="/rights" class="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-colors">⚖️ Rights</a>
+                <a href="/register" class="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-colors">📝 Register</a>
+                <a href="/history" class="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-colors">📜 History</a>
+                <a href="/helpline" class="block text-white/90 hover:text-white hover:bg-white/10 px-4 py-3 rounded-lg text-sm font-medium transition-colors">☎️ Helpline</a>
+            </nav>
         </div>
     </header>
 
+    <!-- Stats Bar -->
+    <div class="w-full text-white text-center py-2.5 text-sm font-medium" style="background: linear-gradient(135deg, #FF9933 0%, #FF6B35 100%);">
+        <div class="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
+            <span>🗳 96.8 Cr Voters</span>
+            <span class="hidden sm:inline">|</span>
+            <span>🏛 543 Lok Sabha Seats</span>
+            <span class="hidden sm:inline">|</span>
+            <span>📅 Since 1951</span>
+            <span class="hidden sm:inline">|</span>
+            <span>☎ Helpline: 1950</span>
+        </div>
+    </div>
+
     <!-- Main Content Area -->
-    <main role="main" id="main-content" class="flex-grow w-full max-w-3xl mx-auto px-4 py-6 flex flex-col">
+    <main role="main" id="main-content" class="flex-grow w-full">
         {% block content %}{% endblock %}
     </main>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white/80 text-center py-5 px-4 text-sm mt-auto">
+        <p>Powered by Google Gemini AI &nbsp;|&nbsp; Data: Election Commission of India &nbsp;|&nbsp; Non-partisan &amp; Educational</p>
+    </footer>
+
+    <!-- Hamburger Menu Script -->
+    <script>
+        (function() {
+            const hamburgerBtn = document.getElementById('hamburgerBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburgerIcon = document.getElementById('hamburgerIcon');
+            const closeIcon = document.getElementById('closeIcon');
+
+            if (hamburgerBtn && mobileMenu) {
+                hamburgerBtn.addEventListener('click', function() {
+                    const isOpen = mobileMenu.classList.toggle('open');
+                    hamburgerBtn.setAttribute('aria-expanded', isOpen);
+                    hamburgerIcon.classList.toggle('hidden', isOpen);
+                    closeIcon.classList.toggle('hidden', !isOpen);
+                });
+            }
+        })();
+    </script>
 
     {% block scripts %}{% endblock %}
 </body>

@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}History of Indian Elections 📜 - ElectionGuide{% endblock %}
+
+{% block extra_head %}
+<style>
+    .history-page {
+        background-color: #0f0f0f;
+        min-height: 100vh;
+    }
+
+    .history-timeline {
+        position: relative;
+    }
+
+    /* Center line */
+    .history-timeline::after {
+        content: '';
+        position: absolute;
+        width: 3px;
+        background: linear-gradient(to bottom, #D4A843, #FF993380, #D4A843);
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        margin-left: -1.5px;
+    }
+
+    @media (max-width: 768px) {
+        .history-timeline::after {
+            left: 24px;
+        }
+    }
+
+    .history-card {
+        position: relative;
+        width: 50%;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.7s ease-out;
+    }
+
+    .history-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .history-card:nth-child(odd) {
+        left: 0;
+        padding-right: 50px;
+    }
+
+    .history-card:nth-child(even) {
+        left: 50%;
+        padding-left: 50px;
+    }
+
+    @media (max-width: 768px) {
+        .history-card {
+            width: 100%;
+            padding-left: 60px !important;
+            padding-right: 0 !important;
+        }
+        .history-card:nth-child(even) {
+            left: 0;
+        }
+    }
+
+    /* Year circle */
+    .year-badge {
+        position: absolute;
+        top: 20px;
+        z-index: 10;
+        background: #D4A843;
+        color: #0f0f0f;
+        font-weight: 700;
+        font-size: 0.75rem;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-family: 'Playfair Display', serif;
+        white-space: nowrap;
+    }
+
+    .history-card:nth-child(odd) .year-badge {
+        right: -8px;
+        transform: translateX(50%);
+    }
+
+    .history-card:nth-child(even) .year-badge {
+        left: -8px;
+        transform: translateX(-50%);
+    }
+
+    @media (max-width: 768px) {
+        .history-card .year-badge {
+            left: 8px !important;
+            right: auto !important;
+            transform: none !important;
+        }
+    }
+
+    .history-inner {
+        background: #1a1a1a;
+        border: 1px solid #2a2a2a;
+        border-radius: 16px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .history-inner:hover {
+        border-color: #D4A843;
+        box-shadow: 0 0 30px rgba(212, 168, 67, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* Vintage newspaper feel */
+    .history-title {
+        font-family: 'Playfair Display', serif;
+        color: #D4A843;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="history-page">
+    <div class="max-w-5xl mx-auto px-4 py-12">
+
+        <!-- Header -->
+        <div class="text-center mb-14">
+            <h2 class="font-display text-3xl sm:text-5xl text-white mb-4" style="font-family: 'Playfair Display', serif;">History of Indian Elections 📜</h2>
+            <p class="text-white/40 max-w-2xl mx-auto text-sm sm:text-base">From independence to the world's largest democracy — a journey through India's electoral milestones.</p>
+            <div class="mt-4 w-24 h-0.5 mx-auto" style="background: linear-gradient(to right, transparent, #D4A843, transparent);"></div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="history-timeline py-8">
+
+            <!-- 1947 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1947</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Independence & Foundation</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">India gains independence. Universal Adult Franchise established. Every citizen 21+ gets the right to vote (later lowered to 18 in 1989 by the 61st Amendment).</p>
+                </div>
+            </div>
+
+            <!-- 1950 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1950</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">ECI Founded</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Election Commission of India founded on January 25, 1950. <strong class="text-white/80">Sukumar Sen</strong> becomes the first Chief Election Commissioner, tasked with organizing the first-ever general election.</p>
+                </div>
+            </div>
+
+            <!-- 1951-52 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1951-52</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">First General Election</h3>
+                    <p class="text-white/60 text-sm leading-relaxed"><strong class="text-white/80">173 million voters. 489 Lok Sabha seats. 1,874 candidates.</strong> INC wins 364 seats. Jawaharlal Nehru becomes PM. The largest democratic experiment in human history at that time.</p>
+                </div>
+            </div>
+
+            <!-- 1967 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1967</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Political Diversity</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">INC wins with a reduced majority. Regional parties gain significant strength in state elections. This marks the beginning of coalition politics in India.</p>
+                </div>
+            </div>
+
+            <!-- 1971 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1971</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Indira Gandhi Landslide</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">INC wins 352 seats on the famous <strong class="text-white/80">"Garibi Hatao"</strong> (Remove Poverty) campaign. Voter turnout reaches 55.3%. A decisive mandate for change.</p>
+                </div>
+            </div>
+
+            <!-- 1975-77 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1975-77</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Emergency Period</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Emergency declared on June 25, 1975. Elections suspended. Fundamental rights curtailed. Press censored. Democracy restored after 21 months in 1977.</p>
+                </div>
+            </div>
+
+            <!-- 1977 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1977</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">First Non-Congress Government</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Janata Party wins 295 seats. <strong class="text-white/80">Morarji Desai</strong> becomes the first non-Congress Prime Minister. Democracy proves its resilience.</p>
+                </div>
+            </div>
+
+            <!-- 1984 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1984</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Sympathy Wave</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">INC wins <strong class="text-white/80">414 seats — the highest ever</strong> by any single party. This came after the assassination of Indira Gandhi. Rajiv Gandhi becomes the youngest PM at age 40.</p>
+                </div>
+            </div>
+
+            <!-- 1993 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">1993</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Voter ID Revolution</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Chief Election Commissioner <strong class="text-white/80">T.N. Seshan</strong> introduces Photo Electoral Rolls and the EPIC (Voter ID) card system, revolutionizing voter identification in India.</p>
+                </div>
+            </div>
+
+            <!-- 2004 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">2004</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">EVM Adoption</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Electronic Voting Machines (EVMs) used in all constituencies for the first time. Paper ballots eliminated. <strong class="text-white/80">Manmohan Singh</strong> becomes Prime Minister.</p>
+                </div>
+            </div>
+
+            <!-- 2013 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">2013</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">NOTA Introduced</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">Supreme Court orders the <strong class="text-white/80">NOTA (None Of The Above)</strong> option on EVMs, giving voters the right to reject all candidates while still participating in the democratic process.</p>
+                </div>
+            </div>
+
+            <!-- 2014 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">2014</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Digital Election</h3>
+                    <p class="text-white/60 text-sm leading-relaxed">BJP wins 282 seats. <strong class="text-white/80">Narendra Modi</strong> becomes PM. India's first social media election — campaigns go digital. Voter turnout reaches 66.4%, the highest at that time.</p>
+                </div>
+            </div>
+
+            <!-- 2019 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">2019</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">Record Turnout</h3>
+                    <p class="text-white/60 text-sm leading-relaxed"><strong class="text-white/80">900 million eligible voters</strong> — the largest election in human history. BJP wins 303 seats. Voter turnout reaches 67.4%, setting a new record.</p>
+                </div>
+            </div>
+
+            <!-- 2024 -->
+            <div class="history-card mb-12">
+                <div class="year-badge">2024</div>
+                <div class="history-inner">
+                    <h3 class="history-title text-xl mb-2">18th General Election</h3>
+                    <p class="text-white/60 text-sm leading-relaxed"><strong class="text-white/80">96.8 crore registered voters.</strong> Conducted in 7 phases. VVPAT (Voter Verifiable Paper Audit Trail) machines deployed alongside EVMs for complete transparency.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { root: null, rootMargin: '0px', threshold: 0.15 });
+
+    document.querySelectorAll('.history-card').forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

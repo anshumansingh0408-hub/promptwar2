@@ -22,11 +22,10 @@ app = Flask(__name__)
 # System Prompt for the AI
 SYSTEM_PROMPT = (
     "You are ElectionGuide, a neutral and non-partisan AI assistant that helps people "
-    "understand how elections work. Be educational, clear, and concise. Never advocate "
-    "for any party or candidate. Use numbered lists for multi-step processes. Default to "
-    "the INDIA election system (Election Commission of India, Lok Sabha, Vidhan Sabha, EVM voting, EPIC voter ID card, NVSP portal) unless the user specifically asks about another country. "
-    "When talking about voter ID in India, refer to it as EPIC (Electors Photo Identity Card), explain that registration is done via the NVSP portal (nvsp.in) or Voter Helpline App, and eligibility requires being an Indian citizen aged 18 or above as on the qualifying date (January 1st of the registration year). "
-    "If asked anything partisan, politely decline and redirect to civics facts."
+    "understand how Indian elections work. Default to India's election system "
+    "(ECI, Lok Sabha, Rajya Sabha, EVM, EPIC voter ID, NVSP portal, Aachar Sanhita, BLO, SIR). "
+    "Be educational, clear, and concise. Never advocate for any party or candidate. "
+    "Use numbered lists for steps. If asked about another country, answer for that country."
 )
 
 # Configuration settings
@@ -48,64 +47,64 @@ ip_requests = {}
 # Hardcoded list of quiz questions
 QUIZ_QUESTIONS = [
     {
-        "question": "What is the primary purpose of the Electoral College?",
-        "options": ["To elect the President and Vice President", "To make laws", "To judge Supreme Court cases", "To manage the economy"],
-        "correct_index": 0,
-        "explanation": "The Electoral College is a process, not a place. The founding fathers established it in the Constitution as a compromise between election of the President by a vote in Congress and election of the President by a popular vote of qualified citizens."
-    },
-    {
-        "question": "When is Election Day held in the United States?",
-        "options": ["First Monday in November", "First Tuesday after the first Monday in November", "November 1st", "Last Tuesday in October"],
+        "question": "How many seats are there in the Lok Sabha?",
+        "options": ["442", "543", "552", "600"],
         "correct_index": 1,
-        "explanation": "Election Day is statutorily set by the U.S. government as the Tuesday following the first Monday in November."
+        "explanation": "The Lok Sabha has 543 elected seats. Members are directly elected by Indian citizens."
     },
     {
-        "question": "How many total electoral votes are there in the U.S. Electoral College?",
-        "options": ["435", "50", "538", "100"],
-        "correct_index": 2,
-        "explanation": "There are 538 electoral votes in total, corresponding to the 435 Representatives, 100 Senators, and 3 electors for the District of Columbia."
-    },
-    {
-        "question": "What happens if no presidential candidate receives a majority of electoral votes?",
-        "options": ["A national run-off election is held", "The current president stays in power", "The House of Representatives elects the President", "The Supreme Court decides"],
-        "correct_index": 2,
-        "explanation": "If no candidate receives the required 270 electoral votes, the 12th Amendment dictates that the House of Representatives elects the President from the top three candidates."
-    },
-    {
-        "question": "Which of these is a common method of voting in the U.S. prior to Election Day?",
-        "options": ["Telepathy", "Mail-in voting", "Voting by proxy", "Internet voting"],
-        "correct_index": 1,
-        "explanation": "Mail-in voting (or absentee voting) allows voters to cast their ballots through the mail prior to Election Day."
-    },
-    {
-        "question": "What is a 'Primary Election'?",
-        "options": ["An election to choose the final president", "An election where political parties choose their candidates", "An election for local mayors only", "An election held every year"],
-        "correct_index": 1,
-        "explanation": "Primary elections are held by political parties to nominate their candidates for the general election."
-    },
-    {
-        "question": "When are the results of the presidential election officially certified by Congress?",
-        "options": ["Election Night", "December 14", "January 6", "January 20"],
-        "correct_index": 2,
-        "explanation": "Following the general election and the meeting of the electors in December, Congress meets in a joint session on January 6 to count and certify the electoral votes."
-    },
-    {
-        "question": "What is the minimum voting age in the United States?",
+        "question": "What is the minimum age to vote in India?",
         "options": ["16", "18", "21", "25"],
         "correct_index": 1,
-        "explanation": "The 26th Amendment to the U.S. Constitution, ratified in 1971, lowered the voting age from 21 to 18."
+        "explanation": "Indian citizens aged 18 and above are eligible to vote as per Article 326 of the Constitution."
     },
     {
-        "question": "What is Inauguration Day?",
-        "options": ["The day candidates announce they are running", "The day the President-elect takes the oath of office", "The day voting begins", "The day the Electoral College votes"],
-        "correct_index": 1,
-        "explanation": "Inauguration Day occurs on January 20th and marks the formal commencement of a new four-year term for the President of the United States."
+        "question": "Which body conducts elections in India?",
+        "options": ["Supreme Court", "Parliament", "Election Commission of India", "UPSC"],
+        "correct_index": 2,
+        "explanation": "The Election Commission of India (ECI) is an autonomous constitutional authority responsible for administering elections."
     },
     {
-        "question": "Who can register to vote in U.S. federal elections?",
-        "options": ["Any resident of the U.S.", "U.S. citizens who meet age and residency requirements", "Only property owners", "Anyone who pays taxes"],
+        "question": "What is the EPIC card?",
+        "options": ["Education Card", "Electors Photo Identity Card", "Election Process ID Card", "Emergency ID Card"],
         "correct_index": 1,
-        "explanation": "To vote in a federal election, you must be a U.S. citizen, meet your state's residency requirements, and be 18 years old on or before Election Day."
+        "explanation": "EPIC stands for Electors Photo Identity Card, commonly known as the Voter ID card in India."
+    },
+    {
+        "question": "How many seats does Rajya Sabha have?",
+        "options": ["200", "245", "250", "300"],
+        "correct_index": 1,
+        "explanation": "Rajya Sabha has 245 seats \u2014 233 elected by state assemblies and 12 nominated by the President."
+    },
+    {
+        "question": "What is the Model Code of Conduct (Aachar Sanhita)?",
+        "options": ["A law passed by Parliament", "Guidelines for voters", "Rules for political parties during elections", "ECI internal rules"],
+        "correct_index": 2,
+        "explanation": "The Model Code of Conduct is a set of guidelines issued by ECI that parties and candidates must follow during campaigns."
+    },
+    {
+        "question": "What portal is used to register as a voter in India?",
+        "options": ["india.gov.in", "nvsp.in", "eci.gov.in", "voterportal.eci.gov.in"],
+        "correct_index": 3,
+        "explanation": "The Voter Service Portal at voterportal.eci.gov.in is the official portal for voter registration."
+    },
+    {
+        "question": "When was the first general election held in India?",
+        "options": ["1947", "1950", "1951-52", "1957"],
+        "correct_index": 2,
+        "explanation": "India's first general election was held in 1951-52, one of the largest democratic exercises in history."
+    },
+    {
+        "question": "What is the ECI voter helpline number?",
+        "options": ["100", "1800", "1950", "112"],
+        "correct_index": 2,
+        "explanation": "1950 is the National Voter Helpline. Citizens can call for voter registration and election information."
+    },
+    {
+        "question": "What does BLO stand for in Indian elections?",
+        "options": ["Block Level Officer", "Booth Level Officer", "Ballot Level Officer", "Border Liaison Officer"],
+        "correct_index": 1,
+        "explanation": "BLO stands for Booth Level Officer \u2014 a government official maintaining voter rolls for their assigned booth area."
     }
 ]
 
@@ -141,6 +140,72 @@ def timeline():
         Rendered HTML template for 'timeline.html'.
     """
     return render_template("timeline.html")
+
+@app.route("/seats")
+def seats():
+    """
+    Renders the Parliament seat distribution page.
+    
+    Returns:
+        Rendered HTML template for 'seats.html'.
+    """
+    return render_template("seats.html")
+
+@app.route("/rights")
+def rights():
+    """
+    Renders the voter rights and duties page.
+    
+    Returns:
+        Rendered HTML template for 'rights.html'.
+    """
+    return render_template("rights.html")
+
+@app.route("/history")
+def history():
+    """
+    Renders the history of Indian elections page.
+    
+    Returns:
+        Rendered HTML template for 'history.html'.
+    """
+    return render_template("history.html")
+
+@app.route("/register")
+def register():
+    """
+    Renders the voter registration guide page.
+    
+    Returns:
+        Rendered HTML template for 'register.html'.
+    """
+    return render_template("register.html")
+
+@app.route("/helpline")
+def helpline():
+    """
+    Renders the ECI helplines and contacts page.
+    
+    Returns:
+        Rendered HTML template for 'helpline.html'.
+    """
+    return render_template("helpline.html")
+
+@app.route("/api/eci-info")
+def eci_info():
+    """
+    Returns ECI contact information as JSON.
+    
+    Returns:
+        JSON object with helpline numbers, email, and website URLs.
+    """
+    return jsonify({
+        "helpline": "1950",
+        "toll_free": "1800-111-950",
+        "email": "complaints@eci.gov.in",
+        "website": "https://eci.gov.in",
+        "voter_portal": "https://voterportal.eci.gov.in"
+    })
 
 @app.route("/api/quiz")
 def get_quiz():
@@ -294,8 +359,4 @@ def chat():
         return jsonify({"error": f"An unexpected error occurred: {str(e)}", "code": "INTERNAL_SERVER_ERROR"}), 500
 
 if __name__ == "__main__":
-    app.run(
-        host="0.0.0.0",
-        port=int(os.environ.get("PORT", 8080)),
-        debug=False
-    )
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)), debug=False)

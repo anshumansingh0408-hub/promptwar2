@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block title %}ECI Helplines & Contacts ☎️ - ElectionGuide{% endblock %}
+
+{% block extra_head %}
+<style>
+    .helpline-card {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease-out;
+    }
+    .helpline-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .helpline-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 30px -8px rgba(0,0,0,0.12);
+    }
+    .phone-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+    .phone-link:hover {
+        transform: scale(1.05);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h2 class="font-display text-3xl sm:text-4xl text-secondary mb-3">ECI Helplines & Contacts ☎️</h2>
+        <p class="text-ink/60 max-w-2xl mx-auto">All official contact numbers, websites, and apps for election-related assistance.</p>
+    </div>
+
+    <!-- Alert Banner -->
+    <div class="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl p-5 sm:p-6 mb-8 text-center shadow-lg">
+        <p class="text-lg font-semibold mb-1">🚨 Found a violation? Report on cVIGIL App or call 1950</p>
+        <p class="text-sm text-white/80">ECI responds within <strong>100 minutes</strong> through the Flying Squad</p>
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+
+        <!-- Card 1: Helpline Numbers -->
+        <div class="helpline-card bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center text-xl">📞</div>
+                <h3 class="font-display text-lg text-secondary">Helpline Numbers</h3>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center justify-between bg-blue-50/50 rounded-xl p-4">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary">National Voter Helpline</p>
+                        <p class="text-xs text-ink/40">24/7 Voter Assistance</p>
+                    </div>
+                    <a href="tel:1950" class="phone-link bg-primary text-white text-sm">📞 1950</a>
+                </div>
+                <div class="flex items-center justify-between bg-green-50/50 rounded-xl p-4">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary">Toll Free</p>
+                        <p class="text-xs text-ink/40">Free from any phone</p>
+                    </div>
+                    <a href="tel:1800111950" class="phone-link bg-success text-white text-sm">📞 1800-111-950</a>
+                </div>
+                <div class="flex items-center justify-between bg-orange-50/50 rounded-xl p-4">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary">cVIGIL Helpline</p>
+                        <p class="text-xs text-ink/40">Report MCC Violations</p>
+                    </div>
+                    <a href="tel:1950" class="phone-link bg-primary text-white text-sm">📞 1950</a>
+                </div>
+                <div class="flex items-center justify-between bg-red-50/50 rounded-xl p-4">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary">Emergency</p>
+                        <p class="text-xs text-ink/40">Police/Fire/Ambulance</p>
+                    </div>
+                    <a href="tel:112" class="phone-link bg-red-500 text-white text-sm">📞 112</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Official Websites -->
+        <div class="helpline-card bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center text-xl">🌐</div>
+                <h3 class="font-display text-lg text-secondary">Official Websites</h3>
+            </div>
+            <div class="space-y-3">
+                <a href="https://eci.gov.in" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gray-50 rounded-xl p-4 hover:bg-primary/5 transition-colors group">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary group-hover:text-primary transition-colors">Election Commission of India</p>
+                        <p class="text-xs text-ink/40">eci.gov.in</p>
+                    </div>
+                    <span class="text-ink/30 group-hover:text-primary transition-colors">→</span>
+                </a>
+                <a href="https://voterportal.eci.gov.in" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gray-50 rounded-xl p-4 hover:bg-primary/5 transition-colors group">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary group-hover:text-primary transition-colors">Voter Service Portal</p>
+                        <p class="text-xs text-ink/40">voterportal.eci.gov.in</p>
+                    </div>
+                    <span class="text-ink/30 group-hover:text-primary transition-colors">→</span>
+                </a>
+                <a href="https://www.nvsp.in" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gray-50 rounded-xl p-4 hover:bg-primary/5 transition-colors group">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary group-hover:text-primary transition-colors">NVSP</p>
+                        <p class="text-xs text-ink/40">nvsp.in</p>
+                    </div>
+                    <span class="text-ink/30 group-hover:text-primary transition-colors">→</span>
+                </a>
+                <a href="https://results.eci.gov.in" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gray-50 rounded-xl p-4 hover:bg-primary/5 transition-colors group">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary group-hover:text-primary transition-colors">Election Results</p>
+                        <p class="text-xs text-ink/40">results.eci.gov.in</p>
+                    </div>
+                    <span class="text-ink/30 group-hover:text-primary transition-colors">→</span>
+                </a>
+                <a href="https://loksabha.nic.in" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gray-50 rounded-xl p-4 hover:bg-primary/5 transition-colors group">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary group-hover:text-primary transition-colors">Lok Sabha</p>
+                        <p class="text-xs text-ink/40">loksabha.nic.in</p>
+                    </div>
+                    <span class="text-ink/30 group-hover:text-primary transition-colors">→</span>
+                </a>
+                <a href="https://rajyasabha.nic.in" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between bg-gray-50 rounded-xl p-4 hover:bg-primary/5 transition-colors group">
+                    <div>
+                        <p class="font-semibold text-sm text-secondary group-hover:text-primary transition-colors">Rajya Sabha</p>
+                        <p class="text-xs text-ink/40">rajyasabha.nic.in</p>
+                    </div>
+                    <span class="text-ink/30 group-hover:text-primary transition-colors">→</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Card 3: Mobile Apps -->
+        <div class="helpline-card bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center text-xl">📱</div>
+                <h3 class="font-display text-lg text-secondary">Mobile Apps</h3>
+            </div>
+            <div class="space-y-4">
+                <div class="bg-green-50/50 rounded-xl p-4 border border-green-100">
+                    <p class="font-semibold text-sm text-secondary mb-1">Voter Helpline App</p>
+                    <p class="text-xs text-ink/60">Register, check voter status, find your booth, download e-EPIC card</p>
+                </div>
+                <div class="bg-red-50/50 rounded-xl p-4 border border-red-100">
+                    <p class="font-semibold text-sm text-secondary mb-1">cVIGIL App</p>
+                    <p class="text-xs text-ink/60">Report MCC violations with photo/video. Response within <strong>100 minutes</strong> by Flying Squad</p>
+                </div>
+                <div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100">
+                    <p class="font-semibold text-sm text-secondary mb-1">KYC — Know Your Candidate</p>
+                    <p class="text-xs text-ink/60">Check candidate's criminal record, assets, and education details</p>
+                </div>
+                <div class="bg-purple-50/50 rounded-xl p-4 border border-purple-100">
+                    <p class="font-semibold text-sm text-secondary mb-1">Suvidha App</p>
+                    <p class="text-xs text-ink/60">For candidates — apply for election-related permissions online</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Email -->
+        <div class="helpline-card bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+            <div class="flex items-center gap-3 mb-5">
+                <div class="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center text-xl">✉️</div>
+                <h3 class="font-display text-lg text-secondary">Email</h3>
+            </div>
+            <div class="space-y-3 mb-6">
+                <div class="bg-yellow-50/50 rounded-xl p-4 border border-yellow-100">
+                    <p class="font-semibold text-sm text-secondary">General Complaints</p>
+                    <a href="mailto:complaints@eci.gov.in" class="text-sm text-primary hover:underline">complaints@eci.gov.in</a>
+                </div>
+                <div class="bg-yellow-50/50 rounded-xl p-4 border border-yellow-100">
+                    <p class="font-semibold text-sm text-secondary">Media Certification</p>
+                    <a href="mailto:mediacement@eci.gov.in" class="text-sm text-primary hover:underline">mediacement@eci.gov.in</a>
+                </div>
+            </div>
+
+            <!-- cVIGIL Quick Guide -->
+            <div class="border-t border-gray-100 pt-5 mt-2">
+                <h4 class="font-display text-base text-secondary mb-3">⚡ cVIGIL Quick Guide</h4>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-gray-50 rounded-xl p-3 text-center">
+                        <p class="text-2xl mb-1">❓</p>
+                        <p class="text-xs font-semibold text-secondary">What</p>
+                        <p class="text-[11px] text-ink/50">App to report election violations</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-3 text-center">
+                        <p class="text-2xl mb-1">👤</p>
+                        <p class="text-xs font-semibold text-secondary">Who</p>
+                        <p class="text-[11px] text-ink/50">Any Indian citizen</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-3 text-center">
+                        <p class="text-2xl mb-1">📸</p>
+                        <p class="text-xs font-semibold text-secondary">How</p>
+                        <p class="text-[11px] text-ink/50">Photo/video + auto GPS location</p>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-3 text-center">
+                        <p class="text-2xl mb-1">⏱️</p>
+                        <p class="text-xs font-semibold text-secondary">Response</p>
+                        <p class="text-[11px] text-ink/50">100 min by Flying Squad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.helpline-card').forEach(card => {
+        observer.observe(card);
+    });
+});
+</script>
+{% endblock %}

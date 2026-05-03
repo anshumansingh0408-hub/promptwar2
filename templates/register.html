@@ -1,0 +1,295 @@
+{% extends "base.html" %}
+
+{% block title %}How to Register as a Voter 📝 - ElectionGuide{% endblock %}
+
+{% block extra_head %}
+<style>
+    .reg-section {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.5s ease-out;
+    }
+    .reg-section.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .step-number {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+    .step-connector {
+        width: 2px;
+        height: 24px;
+        margin-left: 19px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+        <h2 class="font-display text-3xl sm:text-4xl text-secondary mb-3">How to Register as a Voter 📝</h2>
+        <p class="text-ink/60 max-w-2xl mx-auto">Step-by-step guide to getting your voter ID and exercising your democratic right in Indian elections.</p>
+    </div>
+
+    <!-- Section 1: Eligibility -->
+    <div class="reg-section bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-5">
+            <span class="text-2xl">🎯</span>
+            <h3 class="font-display text-xl text-secondary">Eligibility Criteria</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="flex items-start gap-3 bg-blue-50/50 rounded-xl p-4">
+                <span class="text-primary font-bold text-lg mt-0.5">✓</span>
+                <span class="text-sm text-ink/80"><strong>Indian citizen</strong> by birth or naturalization</span>
+            </div>
+            <div class="flex items-start gap-3 bg-blue-50/50 rounded-xl p-4">
+                <span class="text-primary font-bold text-lg mt-0.5">✓</span>
+                <span class="text-sm text-ink/80"><strong>18 years or above</strong> as on January 1 of the qualifying year</span>
+            </div>
+            <div class="flex items-start gap-3 bg-blue-50/50 rounded-xl p-4">
+                <span class="text-primary font-bold text-lg mt-0.5">✓</span>
+                <span class="text-sm text-ink/80"><strong>Ordinary resident</strong> of the constituency</span>
+            </div>
+            <div class="flex items-start gap-3 bg-blue-50/50 rounded-xl p-4">
+                <span class="text-primary font-bold text-lg mt-0.5">✓</span>
+                <span class="text-sm text-ink/80"><strong>Not declared of unsound mind</strong> by a competent court</span>
+            </div>
+            <div class="flex items-start gap-3 bg-blue-50/50 rounded-xl p-4 sm:col-span-2">
+                <span class="text-primary font-bold text-lg mt-0.5">✓</span>
+                <span class="text-sm text-ink/80"><strong>Not disqualified</strong> under any law relating to corrupt practices</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2: Documents Required -->
+    <div class="reg-section bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-5">
+            <span class="text-2xl">📄</span>
+            <h3 class="font-display text-xl text-secondary">Documents Required</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-orange-50/50 rounded-xl p-4 border border-orange-100">
+                <p class="font-semibold text-sm text-secondary mb-2">📅 Age Proof (any one)</p>
+                <ul class="text-sm text-ink/70 space-y-1">
+                    <li>• Birth Certificate</li>
+                    <li>• 10th Class Marksheet</li>
+                    <li>• Passport</li>
+                    <li>• PAN Card</li>
+                </ul>
+            </div>
+            <div class="bg-green-50/50 rounded-xl p-4 border border-green-100">
+                <p class="font-semibold text-sm text-secondary mb-2">🏠 Address Proof (any one)</p>
+                <ul class="text-sm text-ink/70 space-y-1">
+                    <li>• Aadhaar Card</li>
+                    <li>• Passport</li>
+                    <li>• Utility Bill (electricity, water, gas)</li>
+                </ul>
+            </div>
+            <div class="bg-blue-50/50 rounded-xl p-4 border border-blue-100">
+                <p class="font-semibold text-sm text-secondary mb-2">📷 Passport Photo</p>
+                <p class="text-sm text-ink/70">Recent passport-size photograph</p>
+            </div>
+            <div class="bg-purple-50/50 rounded-xl p-4 border border-purple-100">
+                <p class="font-semibold text-sm text-secondary mb-2">🆔 Aadhaar Number</p>
+                <p class="text-sm text-ink/70">Optional but recommended for linking</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Online Registration Steps -->
+    <div class="reg-section bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">🌐</span>
+            <h3 class="font-display text-xl text-secondary">Online Registration Steps</h3>
+        </div>
+
+        <!-- Step 1 -->
+        <div class="flex items-start gap-4">
+            <div class="step-number bg-primary text-white">1</div>
+            <div class="pt-2">
+                <p class="font-semibold text-sm text-secondary">Visit voterportal.eci.gov.in</p>
+                <p class="text-sm text-ink/60 mt-1">Go to New Voter Registration → Fill Form 6</p>
+            </div>
+        </div>
+        <div class="step-connector bg-primary/20"></div>
+
+        <!-- Step 2 -->
+        <div class="flex items-start gap-4">
+            <div class="step-number bg-primary text-white">2</div>
+            <div class="pt-2">
+                <p class="font-semibold text-sm text-secondary">Enter Personal Details</p>
+                <p class="text-sm text-ink/60 mt-1">Name, date of birth, address, mobile number</p>
+            </div>
+        </div>
+        <div class="step-connector bg-primary/20"></div>
+
+        <!-- Step 3 -->
+        <div class="flex items-start gap-4">
+            <div class="step-number bg-primary text-white">3</div>
+            <div class="pt-2">
+                <p class="font-semibold text-sm text-secondary">Upload Documents & Photo</p>
+                <p class="text-sm text-ink/60 mt-1">Age proof, address proof, and passport-size photo</p>
+            </div>
+        </div>
+        <div class="step-connector bg-primary/20"></div>
+
+        <!-- Step 4 -->
+        <div class="flex items-start gap-4">
+            <div class="step-number bg-primary text-white">4</div>
+            <div class="pt-2">
+                <p class="font-semibold text-sm text-secondary">Submit & Note Reference ID</p>
+                <p class="text-sm text-ink/60 mt-1">Save your reference ID to track application status</p>
+            </div>
+        </div>
+        <div class="step-connector bg-primary/20"></div>
+
+        <!-- Step 5 -->
+        <div class="flex items-start gap-4">
+            <div class="step-number bg-success text-white">5</div>
+            <div class="pt-2">
+                <p class="font-semibold text-sm text-secondary">BLO Verifies Details</p>
+                <p class="text-sm text-ink/60 mt-1">Booth Level Officer visits your address for verification</p>
+            </div>
+        </div>
+        <div class="step-connector bg-success/20"></div>
+
+        <!-- Step 6 -->
+        <div class="flex items-start gap-4">
+            <div class="step-number bg-success text-white">6</div>
+            <div class="pt-2">
+                <p class="font-semibold text-sm text-secondary">EPIC Card Delivered</p>
+                <p class="text-sm text-ink/60 mt-1">Card delivered to your address or collect from ERO office. You can also download e-EPIC.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Offline Registration -->
+    <div class="reg-section bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-5">
+            <span class="text-2xl">🏢</span>
+            <h3 class="font-display text-xl text-secondary">Offline Registration</h3>
+        </div>
+        <div class="space-y-3">
+            <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                <span class="text-primary font-bold">1.</span>
+                <span class="text-sm text-ink/80">Collect <strong>Form 6</strong> from the Electoral Registration Officer (ERO) or BLO</span>
+            </div>
+            <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                <span class="text-primary font-bold">2.</span>
+                <span class="text-sm text-ink/80">Submit the filled form along with required documents</span>
+            </div>
+            <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                <span class="text-primary font-bold">3.</span>
+                <span class="text-sm text-ink/80">BLO visits your address for physical verification</span>
+            </div>
+            <div class="flex items-start gap-3 bg-gray-50 rounded-xl p-4">
+                <span class="text-primary font-bold">4.</span>
+                <span class="text-sm text-ink/80">Processing takes <strong>30-45 days</strong> after verification</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 5: What is SIR -->
+    <div class="reg-section bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-5">
+            <span class="text-2xl">📋</span>
+            <h3 class="font-display text-xl text-secondary">What is SIR (Summary Revision)?</h3>
+        </div>
+        <div class="bg-blue-50/50 rounded-xl p-5 text-sm text-ink/80 space-y-2">
+            <p>• <strong>Annual exercise</strong> to update and clean up electoral rolls</p>
+            <p>• <strong>January 1st qualifying date</strong> — if you turn 18 by Jan 1, you become eligible</p>
+            <p>• <strong>New voters register</strong>, existing voters update their details (address, photo, etc.)</p>
+            <p>• Conducted by ECI before major elections to ensure accurate voter lists</p>
+        </div>
+    </div>
+
+    <!-- Section 6: What is BLO -->
+    <div class="reg-section bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-5">
+            <span class="text-2xl">👤</span>
+            <h3 class="font-display text-xl text-secondary">What is a BLO?</h3>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-green-50/50 rounded-xl p-4 text-sm text-ink/80">
+                <strong class="text-secondary">Booth Level Officer</strong> — a government official assigned to each polling booth area
+            </div>
+            <div class="bg-green-50/50 rounded-xl p-4 text-sm text-ink/80">
+                <strong class="text-secondary">Maintains voter rolls</strong> — adds new voters, updates records, removes deceased
+            </div>
+            <div class="bg-green-50/50 rounded-xl p-4 text-sm text-ink/80">
+                <strong class="text-secondary">Door-to-door verification</strong> — visits homes to verify voter registration applications
+            </div>
+            <div class="bg-green-50/50 rounded-xl p-4 text-sm text-ink/80">
+                <strong class="text-secondary">Contact via ERO or 1950</strong> — reach your BLO through the helpline or local ERO office
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 7: Voter Helpline App -->
+    <div class="reg-section bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8 mb-6">
+        <div class="flex items-center gap-3 mb-5">
+            <span class="text-2xl">📱</span>
+            <h3 class="font-display text-xl text-secondary">Voter Helpline App</h3>
+        </div>
+        <p class="text-sm text-ink/60 mb-4">Search <strong>"Voter Helpline"</strong> on Play Store or App Store</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-gray-50 rounded-xl p-4 text-center text-sm">
+                <div class="text-2xl mb-2">🔍</div>
+                <p class="font-medium text-secondary">Check Name</p>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-4 text-center text-sm">
+                <div class="text-2xl mb-2">🆔</div>
+                <p class="font-medium text-secondary">Download e-EPIC</p>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-4 text-center text-sm">
+                <div class="text-2xl mb-2">📍</div>
+                <p class="font-medium text-secondary">Find Booth</p>
+            </div>
+            <div class="bg-gray-50 rounded-xl p-4 text-center text-sm">
+                <div class="text-2xl mb-2">📞</div>
+                <p class="font-medium text-secondary">File Complaints</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="text-center mt-8 mb-4">
+        <a href="https://voterportal.eci.gov.in" target="_blank" rel="noopener noreferrer"
+           class="inline-flex items-center gap-2 px-8 py-4 rounded-full text-white font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:scale-105"
+           style="background: linear-gradient(135deg, #FF6B35, #FF9933);">
+            Register Now →
+        </a>
+        <p class="text-sm text-ink/40 mt-3">Opens the official ECI Voter Service Portal in a new tab</p>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reg-section').forEach(section => {
+        observer.observe(section);
+    });
+});
+</script>
+{% endblock %}

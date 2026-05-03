@@ -1,0 +1,296 @@
+{% extends "base.html" %}
+
+{% block title %}Parliament Seat Distribution 🏛 - ElectionGuide{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    .tab-btn.active {
+        background: linear-gradient(135deg, #FF6B35, #FF9933);
+        color: white;
+        border-color: #FF6B35;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateX(-20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    .animate-slide-in {
+        animation: slideIn 0.5s ease-out forwards;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+
+    <!-- Page Header -->
+    <div class="text-center mb-8 animate-slide-in">
+        <h2 class="font-display text-3xl sm:text-4xl text-secondary mb-2">Parliament Seat Distribution 🏛</h2>
+        <p class="text-ink/60 max-w-2xl mx-auto">Explore the constituency-wise distribution of seats across India's two houses of Parliament.</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 text-center">
+            <div class="text-3xl font-display text-primary mb-1">543</div>
+            <div class="text-sm text-ink/60 font-medium">Lok Sabha Seats</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 text-center">
+            <div class="text-3xl font-display text-success mb-1">245</div>
+            <div class="text-sm text-ink/60 font-medium">Rajya Sabha Seats</div>
+        </div>
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6 text-center">
+            <div class="text-3xl font-display text-secondary mb-1">788</div>
+            <div class="text-sm text-ink/60 font-medium">Total Parliament Seats</div>
+        </div>
+    </div>
+
+    <!-- Tab Buttons -->
+    <div class="flex gap-2 mb-6 justify-center">
+        <button class="tab-btn active px-6 py-3 rounded-xl text-sm font-semibold border-2 border-secondary/20 transition-all" data-tab="loksabha">Lok Sabha (543)</button>
+        <button class="tab-btn px-6 py-3 rounded-xl text-sm font-semibold border-2 border-secondary/20 text-secondary hover:bg-gray-50 transition-all" data-tab="rajyasabha">Rajya Sabha (245)</button>
+    </div>
+
+    <!-- Lok Sabha Tab -->
+    <div id="tab-loksabha" class="tab-content active">
+        <!-- Chart -->
+        <div class="bg-secondary rounded-2xl shadow-lg p-4 sm:p-6 mb-8">
+            <h3 class="font-display text-xl text-white mb-4">Lok Sabha — Top 20 States by Seats</h3>
+            <div class="relative" style="height: 500px;">
+                <canvas id="loksabhaChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Searchable Table -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+                <h3 class="font-display text-xl text-secondary">All States & UTs — Lok Sabha</h3>
+                <input type="text" id="searchLS" placeholder="🔍 Search state..." class="border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-64">
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b-2 border-secondary/10">
+                            <th class="text-left py-3 px-4 font-semibold text-secondary">#</th>
+                            <th class="text-left py-3 px-4 font-semibold text-secondary">State / UT</th>
+                            <th class="text-right py-3 px-4 font-semibold text-secondary">Seats</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loksabhaTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rajya Sabha Tab -->
+    <div id="tab-rajyasabha" class="tab-content">
+        <!-- Chart -->
+        <div class="bg-secondary rounded-2xl shadow-lg p-4 sm:p-6 mb-8">
+            <h3 class="font-display text-xl text-white mb-4">Rajya Sabha — States by Seats</h3>
+            <div class="relative" style="height: 450px;">
+                <canvas id="rajyasabhaChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Searchable Table -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 mb-4">
+                <h3 class="font-display text-xl text-secondary">All States — Rajya Sabha</h3>
+                <input type="text" id="searchRS" placeholder="🔍 Search state..." class="border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 w-full sm:w-64">
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b-2 border-secondary/10">
+                            <th class="text-left py-3 px-4 font-semibold text-secondary">#</th>
+                            <th class="text-left py-3 px-4 font-semibold text-secondary">State</th>
+                            <th class="text-right py-3 px-4 font-semibold text-secondary">Seats</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rajyasabhaTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Data
+    const loksabhaData = [
+        {state:"Uttar Pradesh",seats:80},{state:"Maharashtra",seats:48},{state:"West Bengal",seats:42},
+        {state:"Bihar",seats:40},{state:"Tamil Nadu",seats:39},{state:"Madhya Pradesh",seats:29},
+        {state:"Karnataka",seats:28},{state:"Gujarat",seats:26},{state:"Rajasthan",seats:25},
+        {state:"Andhra Pradesh",seats:25},{state:"Odisha",seats:21},{state:"Kerala",seats:20},
+        {state:"Telangana",seats:17},{state:"Jharkhand",seats:14},{state:"Assam",seats:14},
+        {state:"Punjab",seats:13},{state:"Chhattisgarh",seats:11},{state:"Haryana",seats:10},
+        {state:"Delhi",seats:7},{state:"Uttarakhand",seats:5},{state:"Jammu & Kashmir",seats:5},
+        {state:"Himachal Pradesh",seats:4},{state:"Arunachal Pradesh",seats:2},{state:"Goa",seats:2},
+        {state:"Manipur",seats:2},{state:"Meghalaya",seats:2},{state:"Tripura",seats:2},
+        {state:"Nagaland",seats:1},{state:"Mizoram",seats:1},{state:"Sikkim",seats:1},
+        {state:"Ladakh",seats:1},{state:"Chandigarh",seats:1},{state:"Puducherry",seats:1},
+        {state:"Andaman & Nicobar",seats:1},{state:"Dadra & NH",seats:1},{state:"Daman & Diu",seats:1},
+        {state:"Lakshadweep",seats:1}
+    ];
+
+    const rajyasabhaData = [
+        {state:"Uttar Pradesh",seats:31},{state:"Maharashtra",seats:19},{state:"Tamil Nadu",seats:18},
+        {state:"West Bengal",seats:16},{state:"Bihar",seats:16},{state:"Karnataka",seats:12},
+        {state:"Andhra Pradesh",seats:11},{state:"Madhya Pradesh",seats:11},{state:"Gujarat",seats:11},
+        {state:"Rajasthan",seats:10},{state:"Odisha",seats:10},{state:"Kerala",seats:9},
+        {state:"Telangana",seats:7},{state:"Assam",seats:7},{state:"Punjab",seats:7},
+        {state:"Jharkhand",seats:6},{state:"Haryana",seats:5},{state:"Chhattisgarh",seats:5},
+        {state:"Jammu & Kashmir",seats:4},{state:"Delhi",seats:3},{state:"Uttarakhand",seats:3},
+        {state:"Himachal Pradesh",seats:3}
+    ];
+
+    // Gradient helper
+    function createGradient(ctx, chartArea) {
+        const gradient = ctx.createLinearGradient(chartArea.left, 0, chartArea.right, 0);
+        gradient.addColorStop(0, '#FF9933');
+        gradient.addColorStop(1, '#138808');
+        return gradient;
+    }
+
+    // Lok Sabha Chart (top 20)
+    const lsTop20 = loksabhaData.slice(0, 20);
+    const lsCtx = document.getElementById('loksabhaChart').getContext('2d');
+    new Chart(lsCtx, {
+        type: 'bar',
+        data: {
+            labels: lsTop20.map(d => d.state),
+            datasets: [{
+                label: 'Seats',
+                data: lsTop20.map(d => d.seats),
+                backgroundColor: function(context) {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) return '#FF9933';
+                    return createGradient(ctx, chartArea);
+                },
+                borderRadius: 6,
+                barThickness: 18,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1A3A5C',
+                    titleFont: { family: 'Plus Jakarta Sans' },
+                    bodyFont: { family: 'Plus Jakarta Sans' },
+                    padding: 12,
+                    cornerRadius: 8,
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: 'rgba(255,255,255,0.08)' },
+                    ticks: { color: 'rgba(255,255,255,0.7)', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { color: 'rgba(255,255,255,0.9)', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                }
+            }
+        }
+    });
+
+    // Rajya Sabha Chart
+    const rsCtx = document.getElementById('rajyasabhaChart').getContext('2d');
+    new Chart(rsCtx, {
+        type: 'bar',
+        data: {
+            labels: rajyasabhaData.map(d => d.state),
+            datasets: [{
+                label: 'Seats',
+                data: rajyasabhaData.map(d => d.seats),
+                backgroundColor: function(context) {
+                    const chart = context.chart;
+                    const {ctx, chartArea} = chart;
+                    if (!chartArea) return '#138808';
+                    return createGradient(ctx, chartArea);
+                },
+                borderRadius: 6,
+                barThickness: 16,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#1A3A5C',
+                    titleFont: { family: 'Plus Jakarta Sans' },
+                    bodyFont: { family: 'Plus Jakarta Sans' },
+                    padding: 12,
+                    cornerRadius: 8,
+                }
+            },
+            scales: {
+                x: {
+                    grid: { color: 'rgba(255,255,255,0.08)' },
+                    ticks: { color: 'rgba(255,255,255,0.7)', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { color: 'rgba(255,255,255,0.9)', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                }
+            }
+        }
+    });
+
+    // Populate tables
+    function populateTable(tableId, data) {
+        const tbody = document.getElementById(tableId);
+        tbody.innerHTML = '';
+        data.forEach((d, i) => {
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-gray-50 hover:bg-primary/5 transition-colors';
+            tr.innerHTML = `
+                <td class="py-3 px-4 text-ink/40">${i + 1}</td>
+                <td class="py-3 px-4 font-medium">${d.state}</td>
+                <td class="py-3 px-4 text-right font-semibold text-primary">${d.seats}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    populateTable('loksabhaTable', loksabhaData);
+    populateTable('rajyasabhaTable', rajyasabhaData);
+
+    // Search
+    function setupSearch(inputId, tableId, data) {
+        document.getElementById(inputId).addEventListener('input', function() {
+            const q = this.value.toLowerCase();
+            const filtered = data.filter(d => d.state.toLowerCase().includes(q));
+            populateTable(tableId, filtered);
+        });
+    }
+
+    setupSearch('searchLS', 'loksabhaTable', loksabhaData);
+    setupSearch('searchRS', 'rajyasabhaTable', rajyasabhaData);
+
+    // Tab switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+        });
+    });
+});
+</script>
+{% endblock %}
